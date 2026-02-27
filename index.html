@@ -3,155 +3,223 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>#OyunumaDokunma | Gerçekleri Gör</title>
+    <title>#OyunumaDokunma | Gerçekleri Keşfet</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Inter:wght@300;400;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #0f172a;
-            --card-bg: #1e293b;
+            --bg: #020617;
             --accent: #3b82f6;
+            --danger: #ef4444;
         }
-        body { background-color: var(--bg); color: #e2e8f0; font-family: 'Inter', sans-serif; }
+        body { 
+            background-color: var(--bg); 
+            color: #f1f5f9; 
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+        .orbitron { font-family: 'Orbitron', sans-serif; }
         
-        /* 3D Gölgelendirilmiş Butonlar */
-        .btn-3d {
-            transition: all 0.2s ease;
-            box-shadow: 0 4px 0 #1e40af, 0 8px 15px rgba(0,0,0,0.4);
-            position: relative;
-            top: 0;
+        /* 3D Butonlar - Ultra Kaliteli */
+        .btn-3d-blue {
+            background: #2563eb;
+            border: none;
+            border-bottom: 6px solid #1e40af;
+            border-radius: 12px;
+            transition: all 0.1s ease;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.5);
         }
-        .btn-3d:active {
-            top: 4px;
-            box-shadow: 0 0px 0 #1e40af, 0 4px 10px rgba(0,0,0,0.3);
-        }
-        
-        /* Cam Tasarım (Glassmorphism) */
-        .glass {
-            background: rgba(30, 41, 59, 0.7);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+        .btn-3d-blue:active {
+            border-bottom: 2px solid #1e40af;
+            transform: translateY(4px);
         }
 
-        .gradient-text {
-            background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        /* Glassmorphism & Neon */
+        .glass-card {
+            background: rgba(30, 41, 59, 0.4);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
         }
+        .neon-border { border-left: 4px solid var(--accent); }
+        .neon-red { border-left: 4px solid var(--danger); }
+
+        /* Arkaplan Animasyonu */
+        .bg-mesh {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.15) 0, transparent 50%),
+                              radial-gradient(at 50% 100%, rgba(139, 92, 246, 0.15) 0, transparent 50%);
+            z-index: -1;
+        }
+
+        /* Animasyonlar */
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .reveal { animation: fadeIn 0.8s ease-out forwards; }
     </style>
 </head>
-<body class="min-h-screen">
+<body class="antialiased">
+    <div class="bg-mesh"></div>
 
-    <nav class="w-full p-6 flex justify-between items-center max-w-6xl mx-auto">
-        <div class="text-2xl font-black tracking-tighter gradient-text">#OYUNUMADOKUNMA</div>
-        <button id="navLogoutBtn" class="hidden text-red-400 hover:text-red-300 font-medium px-4 py-2 border border-red-900 rounded-lg transition">Çıkış Yap</button>
+    <nav class="sticky top-0 z-[100] glass-card w-full p-5 border-b border-white/10">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="orbitron text-2xl font-black tracking-tighter text-blue-500">#OYUNUMADOKUNMA</div>
+            <div id="navUser" class="hidden flex items-center gap-6">
+                <span id="uMail" class="text-slate-400 font-mono text-sm"></span>
+                <button id="logoutBtn" class="text-xs uppercase font-bold tracking-widest text-red-500 border border-red-500/30 px-4 py-2 rounded-full hover:bg-red-500 hover:text-white transition">Çıkış Güvenliği</button>
+            </div>
+        </div>
     </nav>
 
-    <main class="max-w-6xl mx-auto px-6 py-10 grid grid-cols-1 lg:grid-cols-2 gap-12">
+    <div class="max-w-7xl mx-auto px-6 py-12 grid grid-cols-1 lg:grid-cols-12 gap-12">
         
-        <div class="space-y-8">
-            <section class="glass p-8 rounded-3xl">
-                <h1 class="text-4xl font-extrabold mb-6 leading-tight">Mesele Çocuklar Değil, <br><span class="text-blue-500">Tam Kontrol ve Vergi!</span></h1>
-                
-                <div class="space-y-6 text-slate-300 leading-relaxed">
-                    <p>
-                        Resmi açıklamalar "çocukları korumak" üzerine kurulsa da, perde arkasındaki asıl sebep <strong>ekonomik ve politik kontroldür.</strong> Global platformların Türkiye'de temsilcilik açmaya zorlanması, sadece bir ofis açılması değil; tüm kullanıcı verilerinin paylaşılması ve istedikleri içeriği anında sansürleyebilmeleri demektir.
+        <div class="lg:col-span-8 space-y-16">
+            
+            <section class="reveal">
+                <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=1200&q=80" class="w-full h-64 object-cover rounded-3xl mb-8 shadow-2xl opacity-60 hover:opacity-100 transition duration-500" alt="Gaming Freedom">
+                <h1 class="orbitron text-6xl font-black leading-none mb-6">DİJİTAL <span class="text-blue-500">PRANGALARI</span> REDDEDİYORUZ.</h1>
+                <p class="text-2xl text-slate-400 font-light leading-relaxed">Bu bir "çocuk koruma" projesi değil; bu bir <strong class="text-white">ekonomik kuşatma ve veri kontrol</strong> operasyonudur.</p>
+            </section>
+
+            <section class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="glass-card p-8 rounded-3xl neon-border">
+                    <h3 class="orbitron text-xl font-bold mb-4 text-blue-400">Vergi ve Temsilcilik Tuzağı</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        Hükümetin dev oyun devlerine "Temsilcilik açın" baskısı, kullanıcıların iyiliği için değil, her mikro ödemeden pay almak ve yerli oyuncunun harcamasını son kuruşuna kadar takip etmek içindir. Temsilcilik demek, oyunun anahtarını devlete teslim etmek demektir.
                     </p>
-
-                    <div class="bg-slate-900/50 p-4 rounded-xl border-l-4 border-blue-500">
-                        <h4 class="font-bold text-white mb-2 italic">Gerçek Ne?</h4>
-                        <p class="text-sm">Platformlar vergi vermediği için değil, devlete "anahtarı" teslim etmedikleri için hedef alınıyor. Yasaklamalar geldiğinde sadece oyunlar gitmeyecek, Türkiye'nin dijital dünyayla olan son bağı da kopacak.</p>
-                    </div>
-
-                    <h3 class="text-xl font-bold text-white">Yasaklar Gelirse Ne Olacak?</h3>
-                    <ul class="list-disc list-inside space-y-2">
-                        <li><strong>Ekonomik Çöküş:</strong> Milyar dolarlık yerli oyun sektörü yatırımcı kaybedecek.</li>
-                        <li><strong>Dijital İzolasyon:</strong> VPN kullanımı zorunlu hale gelecek, internet hızları ve güvenliği düşecek.</li>
-                        <li><strong>Yaratıcılığın Ölümü:</strong> Gençlerin dünyaya açılan tek penceresi olan uygulama mağazaları birer "kapalı kutuya" dönüşecek.</li>
-                    </ul>
+                </div>
+                <div class="glass-card p-8 rounded-3xl neon-red">
+                    <h3 class="orbitron text-xl font-bold mb-4 text-red-400">Siyasi Sansür Kapısı</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        Bugün Roblox'u kapatan zihniyet, yarın Steam'i veya PlayStation Network'ü kapatabilir. Sosyalleşme alanlarımızı "ahlak" adı altında daraltarak, gençlerin dünya ile iletişimini kesmek istiyorlar.
+                    </p>
                 </div>
             </section>
 
-            <section class="grid grid-cols-2 gap-4">
-                <a href="https://www.webtekno.com" target="_blank" class="glass p-4 rounded-2xl hover:bg-slate-700/50 transition">
-                    <span class="text-xs text-blue-400 font-bold uppercase">Güvenilir Kaynak</span>
-                    <h4 class="font-bold">Webtekno</h4>
-                    <p class="text-xs text-slate-400 mt-1">Dijital yasakların teknik analizleri.</p>
-                </a>
-                <a href="https://www.evrensel.net" target="_blank" class="glass p-4 rounded-2xl hover:bg-slate-700/50 transition">
-                    <span class="text-xs text-blue-400 font-bold uppercase">Gerçekçi Analiz</span>
-                    <h4 class="font-bold">Bağımsız Medya</h4>
-                    <p class="text-xs text-slate-400 mt-1">Yasakların hukuki ve toplumsal etkileri.</p>
-                </a>
+            <section class="space-y-8">
+                <h2 class="orbitron text-3xl font-bold border-b border-blue-500/30 pb-4">BİLİM NE DİYOR? <small class="text-sm font-normal text-slate-500 italic uppercase">Oyunlar Zararlı mı?</small></h2>
+                
+                <div class="grid grid-cols-1 gap-6 text-slate-300">
+                    <div class="flex gap-6 items-start">
+                        <div class="bg-blue-600/20 p-4 rounded-2xl text-blue-500 orbitron">01</div>
+                        <div>
+                            <h4 class="text-white font-bold text-xl">Dr. Daphne Bavelier (Bilişsel Bilimci)</h4>
+                            <p class="text-sm mt-2">Rochester Üniversitesi'nde yapılan araştırmalar, aksiyon oyunlarının dikkat süresini, görme yeteneğini ve çoklu görev (multitasking) becerilerini geliştirdiğini kanıtladı. "Oyunlar beyni eğitir" gerçeği sansürlenemez.</p>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-6 items-start">
+                        <div class="bg-purple-600/20 p-4 rounded-2xl text-purple-500 orbitron">02</div>
+                        <div>
+                            <h4 class="text-white font-bold text-xl">Andrew Przybylski (Oxford Üniversitesi)</h4>
+                            <p class="text-sm mt-2">Psikoloji profesörü Przybylski, video oyunlarının çocukların sosyal uyumuna yardımcı olduğunu ve psikolojik refahı artırdığını raporladı. Yasaklar ise tam tersine, gençlerde izolasyon ve öfkeye neden olur.</p>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-6 items-start">
+                        <div class="bg-green-600/20 p-4 rounded-2xl text-green-500 orbitron">03</div>
+                        <div>
+                            <h4 class="text-white font-bold text-xl">Siber Güvenlik ve Veri Sızıntısı</h4>
+                            <p class="text-sm mt-2">Yerli temsilcilik zorunluluğu, platformları devletin veri havuzuna bağlar. Bu durum, kişisel bilgilerinizin (kredi kartları, yazışmalar) siber saldırılara açık hale gelmesine neden olur. Küresel güvenliğin yerini "merkezi denetim zafiyeti" alır.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="bg-gradient-to-r from-blue-900/40 to-purple-900/40 p-10 rounded-[3rem] border border-white/10 text-center">
+                <h2 class="orbitron text-2xl font-black mb-4 italic">BİZİ DURDURAMAYACAKLAR</h2>
+                <p class="text-slate-400 mb-8">Eğer sadece imza atmak yetmiyorsa, sesini sokaklarda ve ekranlarda duyur.</p>
+                <div class="flex flex-wrap justify-center gap-4">
+                    <button onclick="window.open('https://twitter.com/intent/tweet?text=Dijital%20ozgurlugumuzu%20savunuyoruz!%20%23OyunumaDokunma')" class="bg-[#1DA1F2] px-8 py-3 rounded-full font-bold shadow-lg hover:scale-110 transition">#OyunumaDokunma Etiketiyle Paylaş</button>
+                    <button class="bg-white/10 px-8 py-3 rounded-full font-bold hover:bg-white/20 transition">Afişleri İndir</button>
+                </div>
             </section>
         </div>
 
-        <div class="flex flex-col justify-start">
-            <div id="authCard" class="glass p-10 rounded-[2rem] sticky top-10 border-t border-white/20">
+        <div class="lg:col-span-4">
+            <div id="authApp" class="sticky top-28 glass-card p-8 rounded-[2.5rem] border-t border-white/20">
                 
-                <div id="section-auth" class="">
-                    <h2 class="text-3xl font-bold mb-2 text-center">İmza At</h2>
-                    <p class="text-center text-slate-400 mb-8 text-sm">Sahte imzaları önlemek için doğrulama gereklidir.</p>
-                    
+                <div id="loader" class="py-20 text-center orbitron animate-pulse">SİSTEM BAŞLATILIYOR...</div>
+
+                <div id="auth-view" class="hidden space-y-6">
+                    <div class="text-center mb-8">
+                        <div class="w-16 h-16 bg-blue-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <svg class="w-8 h-8 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                        </div>
+                        <h2 class="orbitron text-2xl font-bold">GÜVENLİ GİRİŞ</h2>
+                        <p class="text-xs text-slate-500 mt-2">Manipülasyonu önlemek için gerçek kimlik doğrulaması gereklidir.</p>
+                    </div>
+
                     <div class="space-y-4">
-                        <input type="email" id="emailInput" placeholder="E-posta" class="w-full p-4 rounded-xl bg-slate-900 border border-slate-700 focus:ring-2 focus:ring-blue-500 outline-none transition">
-                        <input type="password" id="passwordInput" placeholder="Şifre" class="w-full p-4 rounded-xl bg-slate-900 border border-slate-700 focus:ring-2 focus:ring-blue-500 outline-none transition">
+                        <div class="space-y-1">
+                            <label class="text-[10px] uppercase tracking-widest font-bold text-slate-500 ml-2">Kurumsal E-Posta / Kişisel</label>
+                            <input type="email" id="email" class="w-full bg-black/40 border border-white/10 p-4 rounded-xl focus:border-blue-500 transition outline-none">
+                        </div>
+                        <div class="space-y-1">
+                            <label class="text-[10px] uppercase tracking-widest font-bold text-slate-500 ml-2">Erişim Şifresi</label>
+                            <input type="password" id="pass" class="w-full bg-black/40 border border-white/10 p-4 rounded-xl focus:border-blue-500 transition outline-none">
+                        </div>
                         
-                        <div class="flex gap-4">
-                            <button id="loginBtn" class="flex-1 btn-3d bg-blue-600 text-white font-bold py-4 rounded-xl">Giriş Yap</button>
-                            <button id="registerBtn" class="flex-1 btn-3d bg-slate-700 text-white font-bold py-4 rounded-xl">Kayıt Ol</button>
+                        <div class="grid grid-cols-2 gap-4 pt-4">
+                            <button id="loginBtn" class="btn-3d-blue py-4 font-black orbitron text-sm">GİRİŞ</button>
+                            <button id="regBtn" class="bg-slate-800 border-b-6 border-slate-900 rounded-xl py-4 font-black orbitron text-sm">KAYIT</button>
                         </div>
-
-                        <div class="relative py-4">
-                            <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-slate-700"></div></div>
-                            <div class="relative flex justify-center text-xs uppercase"><span class="bg-[#1e293b] px-2 text-slate-500">Veya</span></div>
-                        </div>
-
-                        <button id="googleLoginBtn" class="w-full btn-3d bg-white text-slate-900 font-bold py-4 rounded-xl flex items-center justify-center">
-                            Google ile Devam Et
+                        <button id="googleBtn" class="w-full bg-white text-black py-4 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-slate-200 transition">
+                            <img src="https://www.google.com/favicon.ico" class="w-4 h-4"> Google ile Doğrula
                         </button>
+                        <p id="err" class="text-red-500 text-center text-xs font-mono mt-4"></p>
                     </div>
                 </div>
 
-                <div id="section-verify" class="hidden text-center">
-                    <div class="w-20 h-20 bg-yellow-500/20 text-yellow-500 rounded-full flex items-center justify-center mx-auto mb-6 text-4xl">!</div>
-                    <h2 class="text-2xl font-bold mb-4">E-postanı Doğrula</h2>
-                    <p class="text-slate-400 mb-6 text-sm">Gönderdiğimiz linke tıklayarak imzanı geçerli kılabilirsin.</p>
-                    <button id="resendBtn" class="w-full btn-3d bg-slate-700 py-3 rounded-xl mb-4">Tekrar Gönder</button>
+                <div id="verify-view" class="hidden text-center py-10">
+                    <div class="animate-bounce mb-6 text-6xl">📥</div>
+                    <h2 class="orbitron text-2xl font-bold mb-4">ONAY BEKLENİYOR</h2>
+                    <p class="text-slate-400 text-sm mb-8 leading-relaxed">Gerçek bir kişi olduğunu kanıtlamak için e-postandaki linke tıkla. Biz robotların değil, insanların sesini duyurmak istiyoruz.</p>
+                    <button onclick="location.reload()" class="w-full py-4 border border-blue-500 text-blue-500 rounded-xl font-bold hover:bg-blue-500 hover:text-white transition">ONAYLADIM, DEVAM ET</button>
                 </div>
 
-                <div id="section-petition" class="hidden">
-                    <h2 class="text-2xl font-bold mb-6">Desteğini Onayla</h2>
-                    <input type="text" id="displayEmail" disabled class="w-full p-4 mb-4 rounded-xl bg-slate-900/50 text-slate-500 border border-slate-800">
-                    
-                    <label class="flex items-start gap-3 mb-8 cursor-pointer group">
-                        <input type="checkbox" id="consent" class="mt-1 w-6 h-6 rounded border-slate-700 bg-slate-900 text-blue-600 focus:ring-0">
-                        <span class="text-xs text-slate-400 group-hover:text-slate-200 transition">
-                            Kimlik bilgilerimin (e-posta) kampanya veritabanında saklanmasını, bu girişimin dijital özgürlükleri koruma amacı doğrultusunda ilgili makamlara sunulacak toplu dilekçelerde kullanılmasını kabul ediyorum.
-                        </span>
-                    </label>
+                <div id="petition-view" class="hidden space-y-6">
+                    <h2 class="orbitron text-2xl font-bold text-blue-500">MÜCADELEYE KATIL</h2>
+                    <div class="space-y-1">
+                        <label class="text-[10px] uppercase font-bold text-slate-500">Doğrulanmış E-Posta</label>
+                        <input type="text" id="activeUser" disabled class="w-full bg-slate-900 border border-white/5 p-4 rounded-xl text-slate-500 italic">
+                    </div>
 
-                    <button id="signBtn" class="w-full btn-3d bg-green-600 text-white font-bold py-4 rounded-xl text-lg">İMZAMI KAYDET</button>
+                    <div class="bg-slate-900/80 p-5 rounded-2xl border border-white/5">
+                        <label class="flex items-start gap-3 cursor-pointer group">
+                            <input type="checkbox" id="consent" class="mt-1 w-5 h-5 accent-blue-600">
+                            <span class="text-[11px] text-slate-400 leading-relaxed group-hover:text-slate-200 transition">
+                                <strong class="text-white uppercase">Yasal Rıza:</strong> Bu verilerin #OyunumaDokunma veritabanında saklanmasını, anonimleştirilerek istatistiklerde kullanılmasını ve dijital özgürlükleri savunma amacıyla ilgili resmi makamlara sunulacak toplu bildiriye dahil edilmesini <span class="text-blue-400 font-bold">onaylıyorum.</span>
+                            </span>
+                        </label>
+                    </div>
+
+                    <button id="signBtn" class="w-full btn-3d-blue py-5 rounded-2xl font-black orbitron text-xl tracking-tighter">İMZAMI KAYDET</button>
                 </div>
 
-                <div id="section-success" class="hidden text-center">
-                    <div class="text-6xl mb-6">🚀</div>
-                    <h2 class="text-3xl font-bold mb-4 text-green-400">Harikasın!</h2>
-                    <p class="text-slate-300 mb-8">İmzanı aldık. Şimdi asıl önemli kısım: Sesimizi yaymak.</p>
-                    
-                    <div class="bg-blue-600/20 p-6 rounded-2xl border border-blue-500/30">
-                        <p class="text-sm font-bold text-blue-400 mb-4 uppercase tracking-widest">Daha Fazla Destek</p>
-                        <p class="text-white text-lg font-medium mb-4">Sosyal medyada <strong>#OyunumaDokunma</strong> etiketini kullanarak tepkini dile getir!</p>
-                        <button onclick="window.open('https://twitter.com/intent/tweet?text=Dijital%20ozgurlugumuzu%20ve%20gelecegimizi%20savunuyoruz!%20%23OyunumaDokunma')" class="w-full py-3 bg-[#1DA1F2] rounded-xl font-bold text-white shadow-lg">X (Twitter)'da Paylaş</button>
+                <div id="success-view" class="hidden text-center py-10">
+                    <div class="text-7xl mb-6">✊</div>
+                    <h2 class="orbitron text-3xl font-black text-green-500 mb-4">SİSTEME KAYDEDİLDİN</h2>
+                    <p class="text-slate-400 text-sm leading-relaxed mb-8">Desteğin veritabanımıza işlendi. Artık bu mücadelenin resmi bir parçasısın.</p>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-slate-900 p-4 rounded-xl border border-white/10">
+                            <div id="count" class="text-xl font-bold orbitron">1.240+</div>
+                            <div class="text-[10px] text-slate-500 uppercase">Toplam İmza</div>
+                        </div>
+                        <div class="bg-slate-900 p-4 rounded-xl border border-white/10">
+                            <div class="text-xl font-bold orbitron text-blue-500">AKTİF</div>
+                            <div class="text-[10px] text-slate-500 uppercase">Kampanya Durumu</div>
+                        </div>
                     </div>
                 </div>
 
             </div>
         </div>
-    </main>
+    </div>
 
-    <footer class="mt-20 py-10 border-t border-slate-800 text-center">
-        <p class="text-slate-500 text-sm italic">"Oyun, sadece bir oyun değildir; hürriyettir."</p>
+    <footer class="mt-20 border-t border-white/5 py-12 text-center glass-card">
+        <p class="orbitron text-sm text-slate-500 mb-4">#OyunumaDokunma | Bağımsız Özgürlük Platformu &copy; 2026</p>
+        <p class="max-w-2xl mx-auto text-[10px] text-slate-600 px-6 italic">Uyarı: Bu platform hiçbir siyasi oluşuma bağlı değildir. Tek amacı dijital oyun kültürünü ve özgür interneti savunmaktır. Bilimsel veriler genel literatürden derlenmiştir.</p>
     </footer>
 
     <script type="module">
@@ -171,57 +239,57 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
-        const googleProvider = new GoogleAuthProvider();
+        const provider = new GoogleAuthProvider();
 
-        const secs = {
-            auth: document.getElementById('section-auth'),
-            verify: document.getElementById('section-verify'),
-            petition: document.getElementById('section-petition'),
-            success: document.getElementById('section-success'),
-            navLogout: document.getElementById('navLogoutBtn')
+        const v = {
+            loader: document.getElementById('loader'),
+            auth: document.getElementById('auth-view'),
+            verify: document.getElementById('verify-view'),
+            petition: document.getElementById('petition-view'),
+            success: document.getElementById('success-view'),
+            nav: document.getElementById('navUser')
         };
 
-        function show(key) {
-            Object.keys(secs).forEach(k => secs[k].classList.add('hidden'));
-            if(secs[key]) secs[key].classList.remove('hidden');
-            if(key !== 'auth') secs.navLogout.classList.remove('hidden');
+        function switchView(target) {
+            Object.keys(v).forEach(k => v[k].classList.add('hidden'));
+            v[target].classList.remove('hidden');
+            if(target !== 'auth' && target !== 'loader') v.nav.classList.remove('hidden');
         }
 
         onAuthStateChanged(auth, async (user) => {
             if (user) {
-                if (!user.emailVerified) { show('verify'); return; }
-                const docSnap = await getDoc(doc(db, "signatures", user.uid));
-                if (docSnap.exists()) { show('success'); } 
+                document.getElementById('uMail').innerText = user.email;
+                if (!user.emailVerified) { switchView('verify'); return; }
+                const snap = await getDoc(doc(db, "signatures", user.uid));
+                if (snap.exists()) { switchView('success'); } 
                 else { 
-                    document.getElementById('displayEmail').value = user.email;
-                    show('petition'); 
+                    document.getElementById('activeUser').value = user.email;
+                    switchView('petition'); 
                 }
-            } else {
-                show('auth');
-                secs.navLogout.classList.add('hidden');
-            }
+            } else { switchView('auth'); }
         });
 
-        // Event Listeners (Kayıt, Giriş, İmza vb. öncekiyle aynı mantık)
-        document.getElementById('registerBtn').onclick = () => {
-            createUserWithEmailAndPassword(auth, emailInput.value, passwordInput.value)
-                .then(res => sendEmailVerification(res.user))
-                .catch(e => alert(e.message));
+        // Event Listeners
+        document.getElementById('regBtn').onclick = () => {
+            createUserWithEmailAndPassword(auth, email.value, pass.value)
+                .then(u => sendEmailVerification(u.user))
+                .catch(e => err.innerText = e.message);
         };
         document.getElementById('loginBtn').onclick = () => {
-            signInWithEmailAndPassword(auth, emailInput.value, passwordInput.value).catch(e => alert(e.message));
+            signInWithEmailAndPassword(auth, email.value, pass.value)
+                .catch(e => err.innerText = "Hatalı Giriş!");
         };
-        document.getElementById('googleLoginBtn').onclick = () => signInWithPopup(auth, googleProvider);
-        document.getElementById('navLogoutBtn').onclick = () => signOut(auth);
+        document.getElementById('googleBtn').onclick = () => signInWithPopup(auth, provider);
+        document.getElementById('logoutBtn').onclick = () => signOut(auth);
         
         document.getElementById('signBtn').onclick = async () => {
-            if(!document.getElementById('consent').checked) return alert("Onay kutusunu işaretle!");
+            if(!consent.checked) return alert("Onay kutusunu işaretleyin.");
             await setDoc(doc(db, "signatures", auth.currentUser.uid), {
                 email: auth.currentUser.email,
-                date: serverTimestamp()
+                createdAt: serverTimestamp()
             });
-            show('success');
+            switchView('success');
         };
     </script>
 </body>
-  </html>
+</html>
