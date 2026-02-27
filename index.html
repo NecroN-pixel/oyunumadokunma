@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#OyunumaDokunma | Gerçekleri Gör</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --bg: #0f172a;
+            --card-bg: #1e293b;
+            --accent: #3b82f6;
+        }
+        body { background-color: var(--bg); color: #e2e8f0; font-family: 'Inter', sans-serif; }
+        
+        /* 3D Gölgelendirilmiş Butonlar */
+        .btn-3d {
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 0 #1e40af, 0 8px 15px rgba(0,0,0,0.4);
+            position: relative;
+            top: 0;
+        }
+        .btn-3d:active {
+            top: 4px;
+            box-shadow: 0 0px 0 #1e40af, 0 4px 10px rgba(0,0,0,0.3);
+        }
+        
+        /* Cam Tasarım (Glassmorphism) */
+        .glass {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+
+    <nav class="w-full p-6 flex justify-between items-center max-w-6xl mx-auto">
+        <div class="text-2xl font-black tracking-tighter gradient-text">#OYUNUMADOKUNMA</div>
+        <button id="navLogoutBtn" class="hidden text-red-400 hover:text-red-300 font-medium px-4 py-2 border border-red-900 rounded-lg transition">Çıkış Yap</button>
+    </nav>
+
+    <main class="max-w-6xl mx-auto px-6 py-10 grid grid-cols-1 lg:grid-cols-2 gap-12">
+        
+        <div class="space-y-8">
+            <section class="glass p-8 rounded-3xl">
+                <h1 class="text-4xl font-extrabold mb-6 leading-tight">Mesele Çocuklar Değil, <br><span class="text-blue-500">Tam Kontrol ve Vergi!</span></h1>
+                
+                <div class="space-y-6 text-slate-300 leading-relaxed">
+                    <p>
+                        Resmi açıklamalar "çocukları korumak" üzerine kurulsa da, perde arkasındaki asıl sebep <strong>ekonomik ve politik kontroldür.</strong> Global platformların Türkiye'de temsilcilik açmaya zorlanması, sadece bir ofis açılması değil; tüm kullanıcı verilerinin paylaşılması ve istedikleri içeriği anında sansürleyebilmeleri demektir.
+                    </p>
+
+                    <div class="bg-slate-900/50 p-4 rounded-xl border-l-4 border-blue-500">
+                        <h4 class="font-bold text-white mb-2 italic">Gerçek Ne?</h4>
+                        <p class="text-sm">Platformlar vergi vermediği için değil, devlete "anahtarı" teslim etmedikleri için hedef alınıyor. Yasaklamalar geldiğinde sadece oyunlar gitmeyecek, Türkiye'nin dijital dünyayla olan son bağı da kopacak.</p>
+                    </div>
+
+                    <h3 class="text-xl font-bold text-white">Yasaklar Gelirse Ne Olacak?</h3>
+                    <ul class="list-disc list-inside space-y-2">
+                        <li><strong>Ekonomik Çöküş:</strong> Milyar dolarlık yerli oyun sektörü yatırımcı kaybedecek.</li>
+                        <li><strong>Dijital İzolasyon:</strong> VPN kullanımı zorunlu hale gelecek, internet hızları ve güvenliği düşecek.</li>
+                        <li><strong>Yaratıcılığın Ölümü:</strong> Gençlerin dünyaya açılan tek penceresi olan uygulama mağazaları birer "kapalı kutuya" dönüşecek.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="grid grid-cols-2 gap-4">
+                <a href="https://www.webtekno.com" target="_blank" class="glass p-4 rounded-2xl hover:bg-slate-700/50 transition">
+                    <span class="text-xs text-blue-400 font-bold uppercase">Güvenilir Kaynak</span>
+                    <h4 class="font-bold">Webtekno</h4>
+                    <p class="text-xs text-slate-400 mt-1">Dijital yasakların teknik analizleri.</p>
+                </a>
+                <a href="https://www.evrensel.net" target="_blank" class="glass p-4 rounded-2xl hover:bg-slate-700/50 transition">
+                    <span class="text-xs text-blue-400 font-bold uppercase">Gerçekçi Analiz</span>
+                    <h4 class="font-bold">Bağımsız Medya</h4>
+                    <p class="text-xs text-slate-400 mt-1">Yasakların hukuki ve toplumsal etkileri.</p>
+                </a>
+            </section>
+        </div>
+
+        <div class="flex flex-col justify-start">
+            <div id="authCard" class="glass p-10 rounded-[2rem] sticky top-10 border-t border-white/20">
+                
+                <div id="section-auth" class="">
+                    <h2 class="text-3xl font-bold mb-2 text-center">İmza At</h2>
+                    <p class="text-center text-slate-400 mb-8 text-sm">Sahte imzaları önlemek için doğrulama gereklidir.</p>
+                    
+                    <div class="space-y-4">
+                        <input type="email" id="emailInput" placeholder="E-posta" class="w-full p-4 rounded-xl bg-slate-900 border border-slate-700 focus:ring-2 focus:ring-blue-500 outline-none transition">
+                        <input type="password" id="passwordInput" placeholder="Şifre" class="w-full p-4 rounded-xl bg-slate-900 border border-slate-700 focus:ring-2 focus:ring-blue-500 outline-none transition">
+                        
+                        <div class="flex gap-4">
+                            <button id="loginBtn" class="flex-1 btn-3d bg-blue-600 text-white font-bold py-4 rounded-xl">Giriş Yap</button>
+                            <button id="registerBtn" class="flex-1 btn-3d bg-slate-700 text-white font-bold py-4 rounded-xl">Kayıt Ol</button>
+                        </div>
+
+                        <div class="relative py-4">
+                            <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-slate-700"></div></div>
+                            <div class="relative flex justify-center text-xs uppercase"><span class="bg-[#1e293b] px-2 text-slate-500">Veya</span></div>
+                        </div>
+
+                        <button id="googleLoginBtn" class="w-full btn-3d bg-white text-slate-900 font-bold py-4 rounded-xl flex items-center justify-center">
+                            Google ile Devam Et
+                        </button>
+                    </div>
+                </div>
+
+                <div id="section-verify" class="hidden text-center">
+                    <div class="w-20 h-20 bg-yellow-500/20 text-yellow-500 rounded-full flex items-center justify-center mx-auto mb-6 text-4xl">!</div>
+                    <h2 class="text-2xl font-bold mb-4">E-postanı Doğrula</h2>
+                    <p class="text-slate-400 mb-6 text-sm">Gönderdiğimiz linke tıklayarak imzanı geçerli kılabilirsin.</p>
+                    <button id="resendBtn" class="w-full btn-3d bg-slate-700 py-3 rounded-xl mb-4">Tekrar Gönder</button>
+                </div>
+
+                <div id="section-petition" class="hidden">
+                    <h2 class="text-2xl font-bold mb-6">Desteğini Onayla</h2>
+                    <input type="text" id="displayEmail" disabled class="w-full p-4 mb-4 rounded-xl bg-slate-900/50 text-slate-500 border border-slate-800">
+                    
+                    <label class="flex items-start gap-3 mb-8 cursor-pointer group">
+                        <input type="checkbox" id="consent" class="mt-1 w-6 h-6 rounded border-slate-700 bg-slate-900 text-blue-600 focus:ring-0">
+                        <span class="text-xs text-slate-400 group-hover:text-slate-200 transition">
+                            Kimlik bilgilerimin (e-posta) kampanya veritabanında saklanmasını, bu girişimin dijital özgürlükleri koruma amacı doğrultusunda ilgili makamlara sunulacak toplu dilekçelerde kullanılmasını kabul ediyorum.
+                        </span>
+                    </label>
+
+                    <button id="signBtn" class="w-full btn-3d bg-green-600 text-white font-bold py-4 rounded-xl text-lg">İMZAMI KAYDET</button>
+                </div>
+
+                <div id="section-success" class="hidden text-center">
+                    <div class="text-6xl mb-6">🚀</div>
+                    <h2 class="text-3xl font-bold mb-4 text-green-400">Harikasın!</h2>
+                    <p class="text-slate-300 mb-8">İmzanı aldık. Şimdi asıl önemli kısım: Sesimizi yaymak.</p>
+                    
+                    <div class="bg-blue-600/20 p-6 rounded-2xl border border-blue-500/30">
+                        <p class="text-sm font-bold text-blue-400 mb-4 uppercase tracking-widest">Daha Fazla Destek</p>
+                        <p class="text-white text-lg font-medium mb-4">Sosyal medyada <strong>#OyunumaDokunma</strong> etiketini kullanarak tepkini dile getir!</p>
+                        <button onclick="window.open('https://twitter.com/intent/tweet?text=Dijital%20ozgurlugumuzu%20ve%20gelecegimizi%20savunuyoruz!%20%23OyunumaDokunma')" class="w-full py-3 bg-[#1DA1F2] rounded-xl font-bold text-white shadow-lg">X (Twitter)'da Paylaş</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <footer class="mt-20 py-10 border-t border-slate-800 text-center">
+        <p class="text-slate-500 text-sm italic">"Oyun, sadece bir oyun değildir; hürriyettir."</p>
+    </footer>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendEmailVerification, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getFirestore, doc, setDoc, getDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCxAlmF2yr9ucwcDqUHNFPfsL33wQUWzz8",
+            authDomain: "oyunumadokunma0.firebaseapp.com",
+            projectId: "oyunumadokunma0",
+            storageBucket: "oyunumadokunma0.firebasestorage.app",
+            messagingSenderId: "203693795100",
+            appId: "1:203693795100:web:d3081b65d15a6a9f503cd9"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const googleProvider = new GoogleAuthProvider();
+
+        const secs = {
+            auth: document.getElementById('section-auth'),
+            verify: document.getElementById('section-verify'),
+            petition: document.getElementById('section-petition'),
+            success: document.getElementById('section-success'),
+            navLogout: document.getElementById('navLogoutBtn')
+        };
+
+        function show(key) {
+            Object.keys(secs).forEach(k => secs[k].classList.add('hidden'));
+            if(secs[key]) secs[key].classList.remove('hidden');
+            if(key !== 'auth') secs.navLogout.classList.remove('hidden');
+        }
+
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                if (!user.emailVerified) { show('verify'); return; }
+                const docSnap = await getDoc(doc(db, "signatures", user.uid));
+                if (docSnap.exists()) { show('success'); } 
+                else { 
+                    document.getElementById('displayEmail').value = user.email;
+                    show('petition'); 
+                }
+            } else {
+                show('auth');
+                secs.navLogout.classList.add('hidden');
+            }
+        });
+
+        // Event Listeners (Kayıt, Giriş, İmza vb. öncekiyle aynı mantık)
+        document.getElementById('registerBtn').onclick = () => {
+            createUserWithEmailAndPassword(auth, emailInput.value, passwordInput.value)
+                .then(res => sendEmailVerification(res.user))
+                .catch(e => alert(e.message));
+        };
+        document.getElementById('loginBtn').onclick = () => {
+            signInWithEmailAndPassword(auth, emailInput.value, passwordInput.value).catch(e => alert(e.message));
+        };
+        document.getElementById('googleLoginBtn').onclick = () => signInWithPopup(auth, googleProvider);
+        document.getElementById('navLogoutBtn').onclick = () => signOut(auth);
+        
+        document.getElementById('signBtn').onclick = async () => {
+            if(!document.getElementById('consent').checked) return alert("Onay kutusunu işaretle!");
+            await setDoc(doc(db, "signatures", auth.currentUser.uid), {
+                email: auth.currentUser.email,
+                date: serverTimestamp()
+            });
+            show('success');
+        };
+    </script>
+</body>
+  </html>
